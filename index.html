@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+        <input type="text" id="taskInput" placeholder="Enter a new task...">
+        <button id="addTaskBtn">Add Task</button>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const taskInput = document.getElementById("taskInput");
+            const addTaskBtn = document.getElementById("addTaskBtn");
+            const taskList = document.getElementById("taskList");
+            let isEditing = false;
+            let editingTask = null;
+
+            addTaskBtn.addEventListener("click", function() {
+                const taskText = taskInput.value.trim();
+                if (taskText !== "") {
+                    if (isEditing && editingTask !== null) {
+                        // Update existing task
+                        editingTask.querySelector("span").textContent = taskText;
+                        isEditing = false;
+                        editingTask = null;
+                        taskInput.value = "";
+                        addTaskBtn.textContent = "Add Task";
+                    } else {
+                        // Add new task
+                        const li = document.createElement("li");
+                        li.innerHTML = `
+                      <input type="checkbox">
+                      <span>${taskText}</span>
+                      <span class="edit">✎</span>
+                      <span class="delete">❌</span>
+                    `;
+                        taskList.appendChild(li);
+                        taskInput.value = "";
+                    }
+                }
+            });
+
+            taskList.addEventListener("click", function(event) {
+                if (event.target.classList.contains("edit")) {
+                    // Edit task
+                    isEditing = true;
+                    editingTask = event.target.parentNode;
+                    taskInput.value = editingTask.querySelector("span").textContent;
+                    addTaskBtn.textContent = "Save Changes";
+                } else if (event.target.classList.contains("delete")) {
+                    // Delete task
+                    const taskItem = event.target.parentNode;
+                    taskList.removeChild(taskItem);
+                }
+            });
+        });
+
+    </script>
+
+</body>
+</html>
