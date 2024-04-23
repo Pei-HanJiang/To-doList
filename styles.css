@@ -35,6 +35,10 @@ button {
     cursor: pointer;
 }
 
+button#deleteAllBtn {
+    background-color: red;
+}
+
 button:hover {
     background-color: #45a049;
 }
